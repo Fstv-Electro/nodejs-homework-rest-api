@@ -14,8 +14,8 @@ router.delete("/:contactId", contactController.deleteContact);
 
 router.put(
   "/:contactId",
-  validateBody,
   checkBody,
+  validateBody,
   contactController.updateContact
 );
 
