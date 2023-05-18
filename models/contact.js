@@ -24,7 +24,7 @@ const contactSchema = new Schema({
 
 contactSchema.post("save", handleMongooseError);
 
-const Contact = model("my_contacts", contactSchema);
+const Contact = model("contacts", contactSchema);
 
 const addSchema = Joi.object({
   name: Joi.string().required().min(3).max(30).pattern(namePattern),
