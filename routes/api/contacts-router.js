@@ -29,7 +29,7 @@ router.patch(
   "/:contactId/favorite",
   isValidId,
   validateFavorite,
-  contactController.updateFavorite
+  contactController.updateStatusContact
 );
 
 module.exports = router;
