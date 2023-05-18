@@ -1,5 +1,5 @@
 const { HttpError } = require("../models/helpers");
-const { schemas } = require("./validateBody");
+const { schemas } = require("../models/contact");
 
 const validateBody = (req, res, next) => {
   const { error } = schemas.addSchema.validate(req.body);
