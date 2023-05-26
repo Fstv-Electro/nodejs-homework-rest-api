@@ -7,7 +7,10 @@ const {
   checkBody,
   isValidId,
   validateFavorite,
+  authenticate,
 } = require("../../decorators");
+
+router.use(authenticate);
 
 router.get("/", contactController.getAllContacts);
 
