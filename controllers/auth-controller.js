@@ -18,8 +18,10 @@ const register = async (req, res) => {
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
   res.status(201).json({
-    email: newUser.email,
-    subscription: newUser.subscription,
+    user: {
+      email: newUser.email,
+      subscription: newUser.subscription,
+    },
   });
 };
 
@@ -42,10 +44,15 @@ const login = async (req, res) => {
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-  await User.findByIdAndUpdate(id, { token });
+  const currentUser = await User.findByIdAndUpdate(id, { token });
+  const { subscription } = currentUser;
 
   res.json({
     token,
+    user: {
+      email,
+      subscription,
+    },
   });
 };
 
@@ -63,9 +70,7 @@ const logout = async (req, res) => {
 
   await User.findByIdAndDelete(_id, { token: "" });
 
-  res.json({
-    message: "Logout success",
-  });
+  res.status(204).json("No Content");
 };
 
 module.exports = {
