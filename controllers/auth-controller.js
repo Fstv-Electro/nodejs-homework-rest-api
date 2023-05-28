@@ -70,7 +70,7 @@ const logout = async (req, res) => {
 
   await User.findByIdAndDelete(_id, { token: "" });
 
-  res.status(204).json("No Content");
+  res.status(204).send();
 };
 
 module.exports = {
