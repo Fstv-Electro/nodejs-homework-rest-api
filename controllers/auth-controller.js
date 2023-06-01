@@ -4,6 +4,7 @@ const { ctrlWrapper } = require("../decorators");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
+const jimp = require("jimp");
 const path = require("path");
 const fs = require("fs/promises");
 const { SECRET_KEY } = process.env;
@@ -11,7 +12,6 @@ const { SECRET_KEY } = process.env;
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const register = async (req, res) => {
-  console.log(req.body);
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -90,7 +90,17 @@ const updateAvatar = async (req, res) => {
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
   await fs.rename(tempUpload, resultUpload);
+  jimp
+    .read(resultUpload)
+    .then((img) => {
+      img.resize(250, 250).quality(60);
+    })
+    .catch((err) => console.log(err.message));
   const avatarURL = path.join("avatars", filename);
+  const user = User.findById(_id);
+  if (!user) {
+    throw HttpError(401);
+  }
   await User.findByIdAndUpdate(_id, { avatarURL });
 
   res.json({
