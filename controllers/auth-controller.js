@@ -4,7 +4,7 @@ const { ctrlWrapper } = require("../decorators");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
-const jimp = require("jimp");
+const Jimp = require("jimp");
 const path = require("path");
 const fs = require("fs/promises");
 const { SECRET_KEY } = process.env;
@@ -90,12 +90,13 @@ const updateAvatar = async (req, res) => {
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
   await fs.rename(tempUpload, resultUpload);
-  jimp
-    .read(resultUpload)
-    .then((img) => {
-      img.resize(250, 250).quality(60);
-    })
-    .catch((err) => console.log(err.message));
+  Jimp.read(resultUpload, (err, img) => {
+    if (err) throw err;
+    img
+      .resize(250, 250) // resize
+      .quality(60)
+      .write(resultUpload);
+  });
   const avatarURL = path.join("avatars", filename);
   const user = User.findById(_id);
   if (!user) {
