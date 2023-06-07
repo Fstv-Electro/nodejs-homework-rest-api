@@ -5,6 +5,7 @@ const { authenticate, upload } = require("../../decorators");
 const {
   validateSignInBody,
   validateSignUpBody,
+  validateEmail,
 } = require("../../decorators/validateUserBody.js");
 const authController = require("../../controllers/auth-controller");
 const router = express.Router();
@@ -19,5 +20,7 @@ router.patch(
   upload.single("avatar"),
   ctrl.updateAvatar
 );
+router.get("/verify/:verficationToken", ctrl.verifyEmail);
+router.post("/verify", validateEmail, ctrl.resendVerifyEmail);
 
 module.exports = router;
