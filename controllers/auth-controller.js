@@ -26,7 +26,7 @@ const register = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<a target="_blank" href="${PROJECT_URL}/users/verify/:${verificationToken}">Click to verify email</a>`,
+    html: `<a target="_blank" href="${PROJECT_URL}/users/verify/${verificationToken}">Click to verify email</a>`,
   };
   await sendEmailSG(verifyEmail);
 
@@ -124,7 +124,9 @@ const updateAvatar = async (req, res) => {
 
 const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
+  console.log(verificationToken);
   const user = await User.findOne({ verificationToken });
+  console.log(user);
   if (!user) {
     throw HttpError(404);
   }
