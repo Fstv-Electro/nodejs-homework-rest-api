@@ -23,6 +23,14 @@ const userSchema = new Schema(
       required: true,
     },
     token: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false }
 );
@@ -42,9 +50,14 @@ const loginSchema = Joi.object({
   email: Joi.string().min(6).required().email({ minDomainSegments: 2 }),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().min(6).required().email({ minDomainSegments: 2 }),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
+  emailSchema,
 };
 
 module.exports = {

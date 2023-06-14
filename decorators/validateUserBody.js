@@ -21,7 +21,16 @@ const validateSignInBody = (req, res, next) => {
   next();
 };
 
+const validateEmail = (req, res, next) => {
+  const { error } = schemas.emailSchema.validate(req.body);
+  if (error) {
+    throw HttpError(400, "missing required field email");
+  }
+  next();
+};
+
 module.exports = {
   validateSignUpBody,
   validateSignInBody,
+  validateEmail,
 };
